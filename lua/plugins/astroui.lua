@@ -9,60 +9,39 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
-    colorscheme = "hybrid",
+    colorscheme = "everforest", -- set in plugins/everforest.lua
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
-      init = function()
-        -- highlight groups we want to KEEP as-is (including their bg)
-        local keep_names = {
-          "Visual",
-          "VisualNOS",
-          "ColorColumn",
-          "PmenuSel",
-          "MatchParen",
-          "QuickFixLine",
-        }
-
-        -- save their original definitions
-        local saved = {}
-        for _, name in ipairs(keep_names) do
-          local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
-          if ok and hl and next(hl) ~= nil then saved[name] = hl end
-        end
-
-        -- make ALL highlight groups transparent (bg only)
-        for _, name in ipairs(vim.fn.getcompletion("", "highlight")) do
-          local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
-          if ok and hl and next(hl) ~= nil then
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            hl.bg = "none"
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            hl.ctermbg = "none"
-            ---@diagnostic disable-next-line: param-type-mismatch
-            vim.api.nvim_set_hl(0, name, hl)
-          end
-        end
-
-        -- restore the useful groups (selection, search, etc.)
-        for name, hl in pairs(saved) do
-          vim.api.nvim_set_hl(0, name, hl)
-        end
-
-        vim.api.nvim_set_hl(0, "Search", { fg = "red", bg = "none" })
-        vim.api.nvim_set_hl(0, "IncSearch", { fg = "red", bg = "none" })
-        vim.api.nvim_set_hl(0, "CurSearch", { fg = "red", bg = "none" })
-        vim.api.nvim_set_hl(0, "Substitute", { fg = "red", bg = "none" })
-
-        -- Spectre Highlighting (Tokyonight tuned)
-        vim.api.nvim_set_hl(0, "SpectreSearch", { fg = "#e0af68", bg = "none" }) -- yellow
-        vim.api.nvim_set_hl(0, "SpectreReplace", { fg = "#f7768e", bg = "none" }) -- soft red
-        vim.api.nvim_set_hl(0, "SpectreReplaceWord", { fg = "#f7768e", bg = "none" }) -- soft red
-
-        vim.api.nvim_set_hl(0, "SpectreAdd", { fg = "#9ece6a", bg = "none" }) -- green
-        vim.api.nvim_set_hl(0, "SpectreDelete", { fg = "#ff9e64", bg = "none" }) -- orange (better contrast)
-        vim.api.nvim_set_hl(0, "SpectreChange", { fg = "#7aa2f7", bg = "none" }) -- blue
-        return {}
-      end,
+      init = { -- this table overrides highlights in all themes
+        Normal = { bg = "NONE" },
+        NormalNC = { bg = "NONE" },
+        SignColumn = { bg = "NONE" },
+        FoldColumn = { bg = "NONE" },
+        LineNr = { bg = "NONE" },
+        EndOfBuffer = { bg = "NONE" },
+        StatusLine = { bg = "NONE" },
+        StatusLineNC = { bg = "NONE" },
+        TabLine = { bg = "NONE" },
+        TabLineFill = { bg = "NONE" },
+        TabLineSel = { bg = "NONE" },
+        WinBar = { bg = "NONE" },
+        WinBarNC = { bg = "NONE" },
+        WinSeparator = { bg = "NONE" },
+        TelescopeNormal = { bg = "NONE" },
+        TelescopeBorder = { bg = "NONE" },
+        TelescopePromptNormal = { bg = "NONE" },
+        TelescopePromptBorder = { bg = "NONE" },
+        TelescopeResultsNormal = { bg = "NONE" },
+        TelescopeResultsBorder = { bg = "NONE" },
+        TelescopePreviewNormal = { bg = "NONE" },
+        TelescopePreviewBorder = { bg = "NONE" },
+        NeoTreeNormal = { bg = "NONE" },
+        NeoTreeNormalNC = { bg = "NONE" },
+        NeoTreeEndOfBuffer = { bg = "NONE" },
+      },
+      astrodark = { -- a table of overrides/changes when applying the astrotheme theme
+        -- Normal = { bg = "#000000" },
+      },
     },
     -- Icons can be configured throughout the interface
     icons = {
